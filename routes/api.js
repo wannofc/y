@@ -1,4 +1,9 @@
 const express = require('express');
+const util = require('minecraft-server-util');
+const options = {
+    timeout: 1000 * 5, // timeout in milliseconds
+    enableSRV: true // SRV record lookup
+};
 const router = express.Router();
 const { cekKey } = require('../database/db'); 
 const { youtubePlay, youtubeMp4, youtubeMp3 } = require('../controllers/yt');
@@ -16,6 +21,18 @@ router.get('/cekapi', async (req, res) => {
         message: `apikey ${apikey} tidak ditemukan, silahkan anda login/register untuk mendapatkan api vikoapi-index.herokuapp.com`
     });
     res.send({status: 200, apikey: apikey, limit: '900 limit', note: 'apikey aktif, silahkan gunakan restapinya'});
+});
+
+router.get('/minecraft', async (req, res) => {
+    const apik = req.query.ipaddress;
+	if (apik === undefined) return res.status(403).send({
+        status: 403,
+        message: `masukan parameter ip address server minecraft`
+    });
+	util.status(apik, 25565, options)
+	.then((result) =>
+    res.json(result
+))
 });
 
 router.get('/ytplay', youtubePlay);
