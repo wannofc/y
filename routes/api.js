@@ -37,21 +37,6 @@ router.get('/minecraft', async (req, res) => {
 ))
 });
 
-router.get('/canvas-welcome', async (req, res) => {
-    const image = await new knights.Welcome()
-    .setUsername("UNDEFINED")
-    .setGuildName("WIBU NOLEP")
-    .setGuildIcon("https://i.ibb.co/G5mJZxs/rin.jpg")
-    .setMemberCount("120")
-    .setAvatar("https://i.ibb.co/1s8T3sY/48f7ce63c7aa.jpg")
-    .setBackground("https://i.ibb.co/4YBNyvP/images-76.jpg")
-    .toAttachment();
-  
-  data = image.toBuffer();
-  await fs.writeFileSync(__path +'/canvas-tmp/swelkom.png', data)
-  res.sendFile(__path +'/canvas-tmp/swelkom.png')
-});
-
 router.get('/ytplay', youtubePlay);
 
 router.get('/ytmp4', youtubeMp4);
