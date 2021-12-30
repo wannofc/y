@@ -1,4 +1,6 @@
 const express = require('express');
+const knights = require("knights-canvas");
+const fs = require('fs-extra');
 const util = require('minecraft-server-util');
 const options = {
     timeout: 1000 * 5, // timeout in milliseconds
@@ -25,14 +27,29 @@ router.get('/cekapi', async (req, res) => {
 
 router.get('/minecraft', async (req, res) => {
     const apik = req.query.ipaddress;
-	if (apik === undefined) return res.status(403).send({
+    if (apik === undefined) return res.status(403).send({
         status: 403,
         message: `masukan parameter ip address server minecraft`
     });
-	util.status(apik, 25565, options)
-	.then((result) =>
+    util.status(apik, 25565, options)
+    .then((result) =>
     res.json(result
 ))
+});
+
+router.get('/canvas-welcome', async (req, res) => {
+    const image = await new knights.Welcome()
+    .setUsername("UNDEFINED")
+    .setGuildName("WIBU NOLEP")
+    .setGuildIcon("https://i.ibb.co/G5mJZxs/rin.jpg")
+    .setMemberCount("120")
+    .setAvatar("https://i.ibb.co/1s8T3sY/48f7ce63c7aa.jpg")
+    .setBackground("https://i.ibb.co/4YBNyvP/images-76.jpg")
+    .toAttachment();
+  
+  data = image.toBuffer();
+  await fs.writeFileSync(__path +'/canvas-tmp/swelkom.png', data)
+  res.sendFile(__path +'/canvas-tmp/swelkom.jpeg')
 });
 
 router.get('/ytplay', youtubePlay);
