@@ -49,7 +49,7 @@ router.get('/canvas-welcome', async (req, res) => {
   
   data = image.toBuffer();
   await fs.writeFileSync(__path +'/canvas-tmp/swelkom.png', data)
-  res.sendFile(__path +'/canvas-tmp/swelkom.jpeg')
+  res.sendFile(__path +'/canvas-tmp/swelkom.png')
 });
 
 router.get('/ytplay', youtubePlay);
