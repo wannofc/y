@@ -1,5 +1,5 @@
 const express = require('express');
-const knights = require("knights-canvas");
+const hx = require('hxz-api');
 const fs = require('fs-extra');
 const util = require('minecraft-server-util');
 const options = {
@@ -11,6 +11,7 @@ const { cekKey } = require('../database/db');
 const { youtubePlay, youtubeMp4, youtubeMp3 } = require('../controllers/yt');
 const { cakLontong, bijak, quotes, fakta, ptl, motivasi } = require('../controllers/randomtext');
 
+// akhir cekapi
 router.get('/cekapi', async (req, res) => {
     const apikey = req.query.apikey;
     if (apikey === undefined) return res.status(404).send({
@@ -24,19 +25,88 @@ router.get('/cekapi', async (req, res) => {
     });
     res.send({status: 200, apikey: apikey, limit: '900 limit', note: 'apikey aktif, silahkan gunakan restapinya'});
 });
-
+// akhir cekapi
+// minecraft
 router.get('/minecraft', async (req, res) => {
     const apik = req.query.ipaddress;
-    if (apik === undefined) return res.status(403).send({
+    const apikey = req.query.apikey;
+    if (apikey === undefined) return res.status(404).send({
+        status: 404,
+        message: `Input Parameter apikey`
+    });
+    const check = await cekKey(apikey);
+    if (!check) return res.status(403).send({
         status: 403,
-        message: `masukan parameter ip address server minecraft`
+        message: `apikey ${apikey} not found, please register first!`
     });
     util.status(apik, 25565, options)
     .then((result) =>
     res.json(result
 ))
 });
+// akhir minecraft
+// lirik
+router.get('/lirik', async (req, res) => {
+    const judul = req.query.search;
+    const apikey = req.query.apikey;
+    if (apikey === undefined) return res.status(404).send({
+        status: 404,
+        message: `Input Parameter apikey`
+    });
+const check = await cekKey(apikey);
+    if (!check) return res.status(403).send({
+        status: 403,
+        message: `apikey ${apikey} not found, please register first!`
+    });
 
+hx.lirik(judul)
+    .then(result => {
+     res.json(result)
+})
+});
+// akhir lirik
+// igstalk
+router.get('/igstalk', async (req, res) => {
+    const username = req.query.username;
+    const apikey = req.query.apikey;
+    if (apikey === undefined) return res.status(404).send({
+        status: 404,
+        message: `Input Parameter apikey`
+    });
+const check = await cekKey(apikey);
+    if (!check) return res.status(403).send({
+        status: 403,
+        message: `apikey ${apikey} not found, please register first!`
+    });
+
+hx.igstalk(username)
+    .then(result => {
+    res.json(result)
+})
+});
+//akhir igstalk
+// pinterest
+router.get('/pinterest', async (req, res) => {
+    const judul = req.query.query;
+    const apikey = req.query.apikey;
+    if (apikey === undefined) return res.status(404).send({
+        status: 404,
+        message: `Input Parameter apikey`
+    });
+const check = await cekKey(apikey);
+    if (!check) return res.status(403).send({
+        status: 403,
+        message: `apikey ${apikey} not found, please register first!`
+    });
+
+    hx.pinterest(judul)
+    .then(result => {
+     res.json(result)
+});
+});
+// akhir pinterest
+
+//modul internal
 router.get('/ytplay', youtubePlay);
 
 router.get('/ytmp4', youtubeMp4);
