@@ -1,6 +1,5 @@
 const express = require('express');
 const hx = require('hxz-api');
-const fbdl = require("fbdl-core");
 const fs = require('fs-extra');
 const util = require('minecraft-server-util');
 const options = {
