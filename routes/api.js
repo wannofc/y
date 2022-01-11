@@ -3,7 +3,7 @@ const hx = require('hxz-api');
 const fs = require('fs-extra');
 const util = require('minecraft-server-util');
 const options = {
-    timeout: 1000 * 5, // timeout in milliseconds
+    timeout: 1000 * 5,
     enableSRV: true // SRV record lookup
 };
 const router = express.Router();
